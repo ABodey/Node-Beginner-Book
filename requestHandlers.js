@@ -1,7 +1,7 @@
 const querystring = require('querystring');
 const fs =require('fs');
 
-function start(res, postData){
+function start(response, postData){
     console.log('Request handler "start" was called.');
 
     var body = '<html>' +
@@ -18,22 +18,24 @@ function start(res, postData){
     '</body>'+
     '</html>';
 
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write(body);
-    res.end();  
+    response.writeHead(200, {'Content-Type': 'text/html'});
+    response.write(body);
+    response.end();  
 }
 
-function upload(res, postData) {
+function upload(response, postData) {
     console.log('Request handler "upload" was called.');
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.write('You have sent the text: '+ querystring.parse(postData).text);
-    res.end();
+
+    response.writeHead(200, { 'Content-Type': 'text/plain' });
+    response.write('You have sent the text: '+
+    querystring.parse(postData).text);
+    response.end();
 }
 
-function show(res){
+function show(response){
     console.log('Request handler "show" was called.');
-    res.writeHead(200, { 'Content-Type': 'image/png'});
-    fs.createReadStream('./tmp/test.png').pipe(res);
+    response.writeHead(200, { 'Content-Type': 'image/png'});
+    fs.createReadStream('./tmp/test.png').pipe(response);
 }
 
 exports.start = start;
